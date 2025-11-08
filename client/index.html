@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Real-Time Collaborative Drawing Canvas</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <header class="toolbar">
+      <div class="toolbar-section">
+        <h1>Collaborative Canvas</h1>
+        <div class="room-info">
+          <span id="roomName">Room: default</span>
+        </div>
+      </div>
+
+      <div class="toolbar-section tools">
+        <button id="brushTool" class="tool-btn active" data-tool="brush" title="Brush (B)">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M12 19l7-7 3 3-7 7-3-3z"></path>
+            <path d="M18 13l-1.5-7.5L2 2l3.5 14.5L13 18l5-5z"></path>
+          </svg>
+        </button>
+        <button id="eraserTool" class="tool-btn" data-tool="eraser" title="Eraser (E)">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M20 20H7L3 16l8-8 8 8-3 4z"></path>
+            <path d="M16 5l3 3"></path>
+          </svg>
+        </button>
+
+        <div class="divider"></div>
+
+        <div class="color-picker">
+          <input type="color" id="colorPicker" value="#000000" title="Color">
+          <label for="colorPicker" class="color-label">Color</label>
+        </div>
+
+        <div class="slider-control">
+          <label for="brushSize">Size: <span id="brushSizeValue">3</span>px</label>
+          <input type="range" id="brushSize" min="1" max="50" value="3">
+        </div>
+
+        <div class="divider"></div>
+
+        <button id="undoBtn" class="action-btn" title="Undo (Ctrl+Z)">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M3 7v6h6"></path>
+            <path d="M21 17a9 9 0 00-9-9 9 9 0 00-6 2.3L3 13"></path>
+          </svg>
+          Undo
+        </button>
+        <button id="redoBtn" class="action-btn" title="Redo (Ctrl+Y)">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M21 7v6h-6"></path>
+            <path d="M3 17a9 9 0 019-9 9 9 0 016 2.3l3 2.7"></path>
+          </svg>
+          Redo
+        </button>
+        <button id="clearBtn" class="action-btn danger" title="Clear Canvas">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polyline points="3 6 5 6 21 6"></polyline>
+            <path d="M19 6v14a2 2 0 01-2 2H7a2 2 0 01-2-2V6m3 0V4a2 2 0 012-2h4a2 2 0 012 2v2"></path>
+          </svg>
+          Clear
+        </button>
+      </div>
+
+      <div class="toolbar-section">
+        <div class="users-online">
+          <div class="users-header">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"></path>
+              <circle cx="9" cy="7" r="4"></circle>
+              <path d="M23 21v-2a4 4 0 00-3-3.87"></path>
+              <path d="M16 3.13a4 4 0 010 7.75"></path>
+            </svg>
+            <span id="userCount">1</span> Online
+          </div>
+          <div id="usersList" class="users-list"></div>
+        </div>
+      </div>
+    </header>
+
+    <div class="canvas-container">
+      <canvas id="canvas"></canvas>
+      <div id="cursors"></div>
+    </div>
+
+    <div class="status-bar">
+      <div class="status-item">
+        <span class="status-indicator" id="connectionStatus"></span>
+        <span id="statusText">Connecting...</span>
+      </div>
+      <div class="status-item">
+        <span id="cursorPosition">x: 0, y: 0</span>
+      </div>
+    </div>
+  </div>
+
+  <div id="joinModal" class="modal">
+    <div class="modal-content">
+      <h2>Join Collaborative Canvas</h2>
+      <form id="joinForm">
+        <div class="form-group">
+          <label for="userName">Your Name</label>
+          <input type="text" id="userName" placeholder="Enter your name" required>
+        </div>
+        <div class="form-group">
+          <label for="roomId">Room ID (optional)</label>
+          <input type="text" id="roomId" placeholder="Leave blank for default room">
+        </div>
+        <button type="submit" class="primary-btn">Join Canvas</button>
+      </form>
+    </div>
+  </div>
+
+  <script src="canvas.js"></script>
+  <script src="websocket.js"></script>
+  <script src="main.js"></script>
+</body>
+</html>
